@@ -8,4 +8,3 @@
  */
 
 rootProject.name = 'post-office-agent-rd-automation'
-include('lib')
