@@ -32,8 +32,19 @@ task cucumberCli() {
             args = [
               '--plugin', 'pretty',
               '--plugin', 'html:target/cucumber-report.html', 
-              '--glue', 'stepDefinations', 
+              '--glue', 'stepDefinitions', 
               'src/test/resources']
+        }
+    }
+}
+
+task cucumber() {
+    dependsOn assemble, testClasses
+    doLast {
+        javaexec {
+            main = "io.cucumber.core.cli.Main"
+            classpath = configurations.cucumberRuntime + sourceSets.main.output + sourceSets.test.output
+            args = ['--plugin', 'pretty','--tags', "${tags}",'--glue', 'stepDefinitions', 'src/test/resources']
         }
     }
 }
@@ -42,6 +53,7 @@ test{
 	useTestNG{
 		systemProperty "cucumber.options", System.getProperty("cucumber.options")
 		systemProperty "environment", System.getProperty("environment")
+		systemProperty "cucumber.filter.tags", System.getProperty("cucumber.filter.tags")
 		
 		suites 'CucumberSuite.xml'
 		}

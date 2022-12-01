@@ -1,4 +1,4 @@
-package stepDefinations;
+package stepDefinitions;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
