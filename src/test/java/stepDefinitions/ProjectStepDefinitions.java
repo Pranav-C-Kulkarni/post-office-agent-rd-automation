@@ -1,4 +1,4 @@
-package stepDefinations;
+package stepDefinitions;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -17,17 +17,17 @@ import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.junit.Assert;
 
-public class ProjectStepDefinations {
+public class ProjectStepDefinitions {
     WebDriver driver;
 	FileInputStream fsrc;
 	XSSFWorkbook wb;
 	XSSFSheet sh;
 	
-	public ProjectStepDefinations(){
+	public ProjectStepDefinitions(){
 		
 	}
 	
-	public ProjectStepDefinations(WebDriver driver){
+	public ProjectStepDefinitions(WebDriver driver){
 		this.driver = driver;
 	}
 
@@ -94,7 +94,7 @@ public class ProjectStepDefinations {
     	wb= new XSSFWorkbook(fsrc);
     	sh= wb.getSheetAt(0);
     	String dr2c1=sh.getRow(1).getCell(0).getStringCellValue();
-    	ProjectStepDefinations obj = new ProjectStepDefinations(driver);
+    	ProjectStepDefinitions obj = new ProjectStepDefinitions(driver);
     	obj.inputText(dr2c1, element);
     }
 
