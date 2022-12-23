@@ -133,7 +133,7 @@ public class ProjectStepDefinitions {
     }
 
     @Then("^we enter CAPTCHA in the alert and its inserted in the (.*) box$")
-    public void captchaInsertion(String inputBox) throws InterruptedException {
+    public void captchaInsertion(String inputBox) throws InterruptedException, IOException {
         String captcha = "";
         if (driver instanceof JavascriptExecutor) {
             JavascriptExecutor js = (JavascriptExecutor) driver;
@@ -148,6 +148,13 @@ public class ProjectStepDefinitions {
             }
             System.out.println("CAPTCHA: " + captcha + captcha.length());
             driver.findElement(By.xpath(ObjectProperties.getElementProperty(inputBox))).sendKeys(captcha);
+            driver.findElement(By.xpath(ObjectProperties.getElementProperty("LoginBtn"))).click();
+            Thread.sleep(2000);
+            if (!(driver.getTitle().equals("Department of Post Agent Login : Dashboard"))) {
+                String pass = new String(Files.readAllBytes(Paths.get("src/test/resources/test_data/password.txt")));
+                inputText(pass, "AgentPassword");
+                captchaInsertion(inputBox);
+            }
         }
     }
 

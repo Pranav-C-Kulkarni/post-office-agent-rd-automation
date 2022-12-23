@@ -11,7 +11,6 @@ Feature: Creating a RD list using automation
   	Then we read the userId.txt file and enter into AgentID input box
   	Then we read the password.txt file and enter into AgentPassword input box
     And we enter CAPTCHA in the alert and its inserted in the CaptchaInput box
-    And we click on LoginBtn
     #########################################	
     #########START CREATING LIST OF ACCOUNTS#############
     Then the title should be "Department of Post Agent Login : Dashboard"
