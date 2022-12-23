@@ -8,7 +8,7 @@ Feature: Creating a RD list using automation
   	* we wait for 2 seconds
   	############LOGIN############
     And we are on LoginPage
-  	Then we enter "DOP.MI4140030100023" into the AgentID element
+  	Then we read the userId.txt file and enter into AgentID input box
   	Then we read the password.txt file and enter into AgentPassword input box
     And we enter CAPTCHA in the alert and its inserted in the CaptchaInput box
     And we click on LoginBtn
