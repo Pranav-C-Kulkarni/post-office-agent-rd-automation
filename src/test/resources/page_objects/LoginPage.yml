@@ -1,0 +1,8 @@
+---
+LoginPage:
+   AgentID: "//*[@id='AuthenticationFG.USER_PRINCIPAL']"
+   AgentPassword: "//*[@id='AuthenticationFG.ACCESS_CODE']"
+   LoginCaptcha: "//img[@id='IMAGECAPTCHA']"
+   CaptchaInput: "//*[@id='AuthenticationFG.VERIFICATION_CODE']"
+   LoginBtn: "//*[@value='Log in']"
+   ClearBtn: "//*[@value='Clear']"

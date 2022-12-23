@@ -1,0 +1,7 @@
+---
+ReportsPage:
+   ReferenceNumberInputBox: "//*[@title='Reference ID']"
+   Status: "//*[@id='CustomAgentRDAccountFG.INSTALLMENT_STATUS']"
+   SearchBtn: "//*[@id='SearchBtn']"
+   Format: "//*[@id='CustomAgentRDAccountFG.OUTFORMAT']"
+   DownloadOkBtn: "//*[@id='GENERATE_REPORT']"

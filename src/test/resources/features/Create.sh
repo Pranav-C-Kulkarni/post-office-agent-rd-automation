@@ -7,4 +7,4 @@ echo $PWD
 DESTINATION=/c/Users/$(whoami)/Desktop/Pranav/PostOffice/post-office-agent-rd-automation/src/test/resources/features
 cd $DESTINATION
 cd "$(git rev-parse --show-toplevel)"
-./gradlew cucumber -P tags=@first
+./gradlew cucumber -P tags=@Create
