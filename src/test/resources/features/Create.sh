@@ -1,7 +1,7 @@
 #!/bin/bash
 #TO RUN THIS SH FILE YOU NEED TO SETUP BELOW TO COMMENT IN .BASHRC FILE
 #DESTINATION=/c/Users/$(whoami)/Desktop/Pranav/PostOffice/post-office-agent-rd-automation/src/test/resources/features
-#alias run='source '$DESTINATION'/First.sh'
+#alias run='source '$DESTINATION'/Create.sh'
 export term=cygwin
 echo $PWD
 DESTINATION=/c/Users/$(whoami)/Desktop/Pranav/PostOffice/post-office-agent-rd-automation/src/test/resources/features

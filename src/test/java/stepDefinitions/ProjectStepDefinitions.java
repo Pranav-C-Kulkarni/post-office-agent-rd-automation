@@ -151,13 +151,19 @@ public class ProjectStepDefinitions {
         }
     }
 
-    @Then("^we read the (.*) file and enter into (.*) input box$")
-    public void readTxtFile(String filename, String element) throws IOException {
-        String data = new String(Files.readAllBytes(Paths.get("src/test/resources/test_data/" + filename)));
+    @Then("^we read the AccountNos file and enter into (.*) input box$")
+    public void readTxtFile(String element) throws IOException {
+        String data = new String(Files.readAllBytes(Paths.get("src/test/resources/test_data/AddNew.txt")));
         // Assigning value to global variable
         this.accountNos = data;
         System.err.println("These are the accounts: " + accountNos);
         inputText(accountNos, element);
+    }
+    
+    @Then("^we read the (.*) file and enter into (.*) input box$")
+    public void readPassword(String filename, String element) throws IOException {
+        String data = new String(Files.readAllBytes(Paths.get("src/test/resources/test_data/" + filename)));
+        inputText(data, element);
     }
 
     @Then("^we selected the given account Ids$")
