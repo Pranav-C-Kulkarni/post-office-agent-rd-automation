@@ -9,8 +9,7 @@ Feature: Creating a RD list using automation
   	############LOGIN############
     And we are on LoginPage
   	Then we enter "DOP.MI4140030100023" into the AgentID element
-  	Then we enter "$ckulkarni@8719" into the AgentPassword element
-  	###THIS AREA WILL BE FOCUSED NEXT TIME###
+  	Then we read the password.txt file and enter into AgentPassword input box
     And we enter CAPTCHA in the alert and its inserted in the CaptchaInput box
     And we click on LoginBtn
     #########################################	
@@ -22,7 +21,7 @@ Feature: Creating a RD list using automation
     Then we click on AccountsEnquireLink
     And we wait for 10 seconds
     Then we click on CashRadionBtn
-    And we read the AddNew.txt file and enter into AccountIdInputArea input box
+    And we read the AccountNos file and enter into AccountIdInputArea input box
     And we click on FetchBtn
     And we wait for 5 seconds
     And we need open dates for all given accounts and create excel file
@@ -43,6 +42,6 @@ Feature: Creating a RD list using automation
     And we wait for 1 seconds
     Then we select "XLS file" from Format dropdown
     And we click on DownloadOkBtn
+    And we wait for 10 seconds
     #####################################################
-    And we wait for 100 seconds
     
