@@ -1,0 +1,13 @@
+---
+DashboardPage:
+   AccountsLink: "//*[@id='Accounts']"
+   AccountsEnquireLink: "//*[@id='Agent Enquire & Update Screen']"
+   CashRadionBtn: "//*[@title='Cash']"
+   AccountIdInputArea: "//*[@title='Account Number']"
+   FetchBtn: "//*[@value='Fetch']"
+   NextPageBtn: "//*[@id='Action.AgentRDActSummaryAllListing.GOTO_NEXT__']"
+   SaveBtn: "//*[@value='Save']"
+   PayAccountsBtn: "//*[@value='Pay All Saved Installments']"
+   GoToPageInputBox: "//*[@id='CustomAgentRDAccountFG.AgentRDActSummaryAllListing_REQUESTED_PAGE_NUMBER']"
+   GoBtn: "//*[@value='Go']"
+   ReportsLink: "//*[@id='Reports']"
