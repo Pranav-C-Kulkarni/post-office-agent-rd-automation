@@ -5,3 +5,5 @@ ReportsPage:
    SearchBtn: "//*[@id='SearchBtn']"
    Format: "//*[@id='CustomAgentRDAccountFG.OUTFORMAT']"
    DownloadOkBtn: "//*[@id='GENERATE_REPORT']"
+   LogoutLink: "//*[@id='HREF_Logout']"
+   LogoutBtn: "//*[@id='LOG_OUT']"

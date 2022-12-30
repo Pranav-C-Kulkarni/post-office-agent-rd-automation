@@ -32,7 +32,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.junit.Assert;
@@ -44,7 +45,7 @@ public class ProjectStepDefinitions {
     XSSFSheet sh;
     String accountNos;
     String refNum;
-    ArrayList<String> accountOpenDates;
+    ArrayList<Object[]> accountOpenDates;
     Duration duration;
 
     public ProjectStepDefinitions() {
@@ -56,7 +57,7 @@ public class ProjectStepDefinitions {
 
     @Before
     public void launchBrowser() {
-        System.setProperty("webdriver.chrome.driver", "C:\\Users\\pranav.b.kulkarni\\Selenium\\chromedriver.exe");
+        System.setProperty("webdriver.chrome.driver", "src/main/resources/drivers/chromedriver.exe");
         driver = new ChromeDriver();
         driver.manage().window().maximize();
     }
@@ -158,7 +159,7 @@ public class ProjectStepDefinitions {
         }
     }
 
-    @Then("^we read the AccountNos file and enter into (.*) input box$")
+    @Then("^I read the AccountNos file and enter into (.*) input box$")
     public void readTxtFile(String element) throws IOException {
         String data = new String(Files.readAllBytes(Paths.get("src/test/resources/test_data/AddNew.txt")));
         // Assigning value to global variable
@@ -166,7 +167,7 @@ public class ProjectStepDefinitions {
         System.err.println("These are the accounts: " + accountNos);
         inputText(accountNos, element);
     }
-    
+
     @Then("^we read the (.*) file and enter into (.*) input box$")
     public void readPassword(String filename, String element) throws IOException {
         String data = new String(Files.readAllBytes(Paths.get("src/test/resources/test_data/" + filename)));
@@ -209,10 +210,33 @@ public class ProjectStepDefinitions {
     @Then("^we need open dates for all given accounts and create excel file$")
     public void createExcel() throws InterruptedException, FileNotFoundException {
         accountOpenDate();
-        FileOutputStream file = new FileOutputStream("src\\test\\resources\\test_data\\AccountIds.xlsx");
+        // create blank workbook
         XSSFWorkbook workbook = new XSSFWorkbook();
-        XSSFSheet spreadsheet = workbook.createSheet("AccountIds");
-        XSSFRow row;
+        // Create a blank sheet
+        XSSFSheet sheet = workbook.createSheet("AccountIds");
+        int rownum = 0;
+        Row row;
+        Cell cell;
+        for (Object[] openDate : accountOpenDates) {
+            row = sheet.createRow(rownum++);
+
+            int cellnum = 0;
+            for (Object obj : openDate) {
+                cell = row.createCell(cellnum);
+                if (obj instanceof String) {
+                    cell.setCellValue((String) obj);
+                }
+            }
+        }
+        try {
+            // Write the workbook in file system
+            FileOutputStream out = new FileOutputStream(new File("src\\test\\resources\\test_data\\AccountIds.xlsx"));
+            workbook.write(out);
+            out.close();
+            System.out.println("AccountIds.xlsx has been created successfully");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public void accountOpenDate() throws InterruptedException {
@@ -223,6 +247,7 @@ public class ProjectStepDefinitions {
         long filterMon;
         long filterYear;
         String accountOpenDate;
+        ArrayList<Object[]> list = new ArrayList<Object[]>();
         String[] filter = this.accountNos.split(",");
         for (int i = 0; i < filter.length; i++) {
             if (filter.length > 10 && i == 10 || i == 20) {
@@ -262,9 +287,9 @@ public class ProjectStepDefinitions {
                 driver.findElement(By.xpath(ObjectProperties.getElementProperty("GoBtn"))).click();
                 Thread.sleep(1000);
             }
-            this.accountOpenDates.add(accountOpenDate);
+            list.add(new Object[] { accountOpenDate });
         }
-
+        this.accountOpenDates = list;
     }
 
     public boolean isAlertPresent() {

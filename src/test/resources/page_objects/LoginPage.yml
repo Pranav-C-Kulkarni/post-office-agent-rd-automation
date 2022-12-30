@@ -6,3 +6,6 @@ LoginPage:
    CaptchaInput: "//*[@id='AuthenticationFG.VERIFICATION_CODE']"
    LoginBtn: "//*[@value='Log in']"
    ClearBtn: "//*[@value='Clear']"
+   LogoutLink: "//*[@id='HREF_Logout']"
+   LogoutBtn: "//*[@id='LOG_OUT']"
+   

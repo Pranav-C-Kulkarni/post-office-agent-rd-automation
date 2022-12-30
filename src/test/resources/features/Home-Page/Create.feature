@@ -20,7 +20,7 @@ Feature: Creating a RD list using automation
     Then we click on AccountsEnquireLink
     And we wait for 10 seconds
     Then we click on CashRadionBtn
-    And we read the AccountNos file and enter into AccountIdInputArea input box
+    And I read the AccountNos file and enter into AccountIdInputArea input box
     And we click on FetchBtn
     And we wait for 5 seconds
     And we need open dates for all given accounts and create excel file
@@ -43,4 +43,9 @@ Feature: Creating a RD list using automation
     And we click on DownloadOkBtn
     And we wait for 10 seconds
     #####################################################
+    ##################LOG OUT############################
+    And we click on LogoutLink
+    And we wait for 1 seconds
+    Then we click on LogoutBtn
+    And we wait for 5 seconds
     
