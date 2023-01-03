@@ -240,7 +240,6 @@ public class ProjectStepDefinitions {
                         .sendKeys(filter[newAccounts.get(newAccount)]
                                 .substring(filter[newAccounts.get(newAccount)].length() - 5));
                 driver.findElement(By.xpath("//*[@id='LOAD_CONFIRM_PAGE']")).click();
-                Thread.sleep(10000);
                 driver.findElement(By.xpath("//*[@id='ADD_FIELD_SUBMIT']")).click();
                 driver.findElement(By.xpath("//*[@class='greenbg']")).isDisplayed();
             }
