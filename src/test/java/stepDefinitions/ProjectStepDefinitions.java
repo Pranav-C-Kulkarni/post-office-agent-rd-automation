@@ -207,6 +207,51 @@ public class ProjectStepDefinitions {
         select.selectByVisibleText(value);
     }
 
+    @Then("^we are adding all ASLAAS numbers for new accounts$")
+    public void ASLAAS_Number() throws InterruptedException, IOException {
+        int paidMonths;
+        String[] filter = this.accountNos.split(",\\r?\\n");
+        Arrays.sort(filter);
+        System.err.println(Arrays.toString(filter));
+        System.err.println(filter.length);
+        List<Integer> newAccounts = new ArrayList<>();
+        for (int i = 0; i < filter.length; i++) {
+            if (filter.length > 10 && i == 10 || i == 20) {
+                driver.findElement(By.xpath(ObjectProperties.getElementProperty("NextPageBtn"))).click();
+                Thread.sleep(1000);
+            }
+            paidMonths = Integer.parseInt(driver
+                    .findElement(
+                            By.xpath("//*[@id='HREF_CustomAgentRDAccountFG.MONTH_PAID_UPTO_ALL_ARRAY[" + i + "]']"))
+                    .getText());
+            if (paidMonths == 1) {
+                newAccounts.add(i);
+            }
+        }
+        Thread.sleep(1000);
+        if (newAccounts.size() != 0) {
+            driver.findElement(By.xpath(ObjectProperties.getElementProperty("UpdateASLAASLink"))).click();
+            Thread.sleep(1000);
+            for (int newAccount = 0; newAccount < newAccounts.size(); newAccount++) {
+                driver.findElement(By.xpath("//*[@id='CustomAgentAslaasNoFG.RD_ACC_NO']"))
+                        .sendKeys(filter[newAccounts.get(newAccount)]);
+                driver
+                        .findElement(By.xpath("//*[@id='CustomAgentAslaasNoFG.ASLAAS_NO']"))
+                        .sendKeys(filter[newAccounts.get(newAccount)]
+                                .substring(filter[newAccounts.get(newAccount)].length() - 5));
+                driver.findElement(By.xpath("//*[@id='LOAD_CONFIRM_PAGE']")).click();
+                Thread.sleep(10000);
+                driver.findElement(By.xpath("//*[@id='ADD_FIELD_SUBMIT']")).click();
+                driver.findElement(By.xpath("//*[@class='greenbg']")).isDisplayed();
+            }
+            driver.findElement(By.xpath(ObjectProperties.getElementProperty("AccountsEnquireLink"))).click();
+            driver.findElement(By.xpath(ObjectProperties.getElementProperty("CashRadionBtn"))).click();
+            readTxtFile("AccountIdInputArea");
+            driver.findElement(By.xpath(ObjectProperties.getElementProperty("FetchBtn"))).click();
+        }
+
+    }
+
     @Then("^we need open dates for all given accounts and create excel file$")
     public void createExcel() throws InterruptedException, FileNotFoundException {
         accountOpenDate();

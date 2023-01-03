@@ -10,4 +10,5 @@ DashboardPage:
    PayAccountsBtn: "//*[@value='Pay All Saved Installments']"
    GoToPageInputBox: "//*[@id='CustomAgentRDAccountFG.AgentRDActSummaryAllListing_REQUESTED_PAGE_NUMBER']"
    GoBtn: "//*[@value='Go']"
+   UpdateASLAASLink: "//*[@id='Update ASLAAS Number']"
    ReportsLink: "//*[@id='Reports']"

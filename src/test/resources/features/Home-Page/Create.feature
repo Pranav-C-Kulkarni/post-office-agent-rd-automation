@@ -18,11 +18,10 @@ Feature: Creating a RD list using automation
     Then we click on AccountsLink
     And we wait for 2 seconds
     Then we click on AccountsEnquireLink
-    And we wait for 10 seconds
     Then we click on CashRadionBtn
     And I read the AccountNos file and enter into AccountIdInputArea input box
     And we click on FetchBtn
-    And we wait for 5 seconds
+    Then we are adding all ASLAAS numbers for new accounts
     And we need open dates for all given accounts and create excel file
     Then we selected the given account Ids
     And we click on SaveBtn
