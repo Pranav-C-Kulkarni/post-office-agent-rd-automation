@@ -62,16 +62,11 @@ test{
 dependencies {
 	
 	// https://mvnrepository.com/artifact/
-	implementation group: 'org.seleniumhq.selenium', name: 'selenium-java', version: '4.5.3'
+	implementation group: 'org.seleniumhq.selenium', name: 'selenium-java', version: '4.7.2'
 	implementation group: 'io.cucumber', name: 'cucumber-java', version: '7.8.1'
 	implementation group: 'org.yaml', name: 'snakeyaml', version: '1.33'
 	testImplementation group: 'junit', name: 'junit', version: '4.13.2'
 	testImplementation group: 'io.cucumber', name: 'cucumber-junit', version: '7.8.1'
 	implementation group: 'org.apache.poi', name: 'poi-ooxml', version: '3.9'
-	testImplementation group: 'org.testng', name: 'testng', version: '6.8'
-	implementation group: 'net.sourceforge.tess4j', name: 'tess4j', version: '5.3.0'
-	
-	
-
-	
+	testImplementation group: 'org.testng', name: 'testng', version: '6.8'	
 }
