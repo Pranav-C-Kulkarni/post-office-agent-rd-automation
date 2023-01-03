@@ -26,9 +26,9 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.time.Duration;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -135,7 +135,7 @@ public class ProjectStepDefinitions {
 
     @Then("^we enter CAPTCHA in the alert and its inserted in the (.*) box$")
     public void captchaInsertion(String inputBox) throws InterruptedException, IOException {
-        String captcha = "";
+        String captcha = null;
         if (driver instanceof JavascriptExecutor) {
             JavascriptExecutor js = (JavascriptExecutor) driver;
             while (true) {
@@ -143,7 +143,12 @@ public class ProjectStepDefinitions {
                 Thread.sleep(15000);
                 isAlertPresent();
                 captcha = (String) js.executeScript("return window.promptResponse");
-                if (captcha != "" && captcha.length() == 6) {
+                if(captcha == null) {
+                    String pass = new String(Files.readAllBytes(Paths.get("src/test/resources/test_data/password.txt")));
+                    inputText(pass, "AgentPassword");
+                    continue;
+                }
+                if (captcha != null && captcha.length() == 6) {
                     break;
                 }
             }
@@ -177,9 +182,9 @@ public class ProjectStepDefinitions {
     @Then("^we selected the given account Ids$")
     public void selectAccounts() throws InterruptedException {
         WebElement checkbox;
-        String[] filter = this.accountNos.split(",");
+        String[] filter = this.accountNos.split(",\\r?\\n");
         for (int i = 0; i < filter.length; i++) {
-            if (filter.length > 10 && i == 10 || i == 20) {
+            if (i == 10 || i == 20) {
                 driver.findElement(By.xpath(ObjectProperties.getElementProperty("NextPageBtn"))).click();
                 Thread.sleep(1000);
             }
@@ -216,7 +221,7 @@ public class ProjectStepDefinitions {
         System.err.println(filter.length);
         List<Integer> newAccounts = new ArrayList<>();
         for (int i = 0; i < filter.length; i++) {
-            if (filter.length > 10 && i == 10 || i == 20) {
+            if (i == 10 || i == 20) {
                 driver.findElement(By.xpath(ObjectProperties.getElementProperty("NextPageBtn"))).click();
                 Thread.sleep(1000);
             }
@@ -235,8 +240,7 @@ public class ProjectStepDefinitions {
             for (int newAccount = 0; newAccount < newAccounts.size(); newAccount++) {
                 driver.findElement(By.xpath("//*[@id='CustomAgentAslaasNoFG.RD_ACC_NO']"))
                         .sendKeys(filter[newAccounts.get(newAccount)]);
-                driver
-                        .findElement(By.xpath("//*[@id='CustomAgentAslaasNoFG.ASLAAS_NO']"))
+                driver.findElement(By.xpath("//*[@id='CustomAgentAslaasNoFG.ASLAAS_NO']"))
                         .sendKeys(filter[newAccounts.get(newAccount)]
                                 .substring(filter[newAccounts.get(newAccount)].length() - 5));
                 driver.findElement(By.xpath("//*[@id='LOAD_CONFIRM_PAGE']")).click();
@@ -288,13 +292,13 @@ public class ProjectStepDefinitions {
         List<String> months;
         String nextMonthText;
         String[] nextMonthDateArray;
-        long filterMon;
-        long filterYear;
         String accountOpenDate;
         ArrayList<Object[]> list = new ArrayList<Object[]>();
-        String[] filter = this.accountNos.split(",");
+        String[] filter = this.accountNos.split(",\\r?\\n");
+        LocalDate date;
+        LocalDate earlier;
         for (int i = 0; i < filter.length; i++) {
-            if (filter.length > 10 && i == 10 || i == 20) {
+            if (i == 10 || i == 20) {
                 driver.findElement(By.xpath(ObjectProperties.getElementProperty("NextPageBtn"))).click();
                 Thread.sleep(1000);
             }
@@ -309,21 +313,13 @@ public class ProjectStepDefinitions {
                             "//*[@id='HREF_CustomAgentRDAccountFG.NEXT_RD_INSTALLMENT_DATE_ALL_ARRAY[" + i + "]']"))
                     .getText();
             nextMonthDateArray = nextMonthText.split("-");
-            filterMon = (12 - (paidMonths % 12)) + months.indexOf(nextMonthDateArray[1]);
-            if (paidMonths % 12 == 0) {
-                filterMon = months.indexOf(nextMonthDateArray[1]);
-            } else if (filterMon > 12) {
-                filterMon = Math.round(Math.floor(filterMon / 12));
-            }
-            filterYear = Integer.parseInt(nextMonthDateArray[2]) - Math.round(Math.floor(paidMonths / 12));
-            if (Integer.parseInt(nextMonthDateArray[2]) == (Calendar.getInstance().get(Calendar.YEAR) + 1)
-                    && paidMonths % 12 != 0) {
-                filterYear = filterYear - 1;
-            }
-            if (filterMon < 10) {
-                accountOpenDate = nextMonthDateArray[0] + "/0" + filterMon + "/" + filterYear;
+            date = LocalDate.of(Integer.valueOf(nextMonthDateArray[2]), months.indexOf(nextMonthDateArray[1]),
+                    Integer.valueOf(nextMonthDateArray[0]));
+            earlier = date.minusMonths(paidMonths);
+            if (earlier.getMonthValue() < 10) {
+                accountOpenDate = nextMonthDateArray[0] + "/0" + earlier.getMonthValue() + "/" + earlier.getYear();
             } else {
-                accountOpenDate = nextMonthDateArray[0] + "/" + filterMon + "/" + filterYear;
+                accountOpenDate = nextMonthDateArray[0] + "/" + earlier.getMonthValue() + "/" + earlier.getYear();
             }
             System.err.println("The account open date is: " + accountOpenDate);
             if (i == (filter.length - 1) && filter.length > 10) {
