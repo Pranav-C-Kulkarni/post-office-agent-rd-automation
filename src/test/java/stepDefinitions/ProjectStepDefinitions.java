@@ -152,7 +152,7 @@ public class ProjectStepDefinitions {
                     break;
                 }
             }
-            System.out.println("CAPTCHA: " + captcha + captcha.length());
+            System.out.println("CAPTCHA: " + captcha);
             driver.findElement(By.xpath(ObjectProperties.getElementProperty(inputBox))).sendKeys(captcha);
             driver.findElement(By.xpath(ObjectProperties.getElementProperty("LoginBtn"))).click();
             Thread.sleep(2000);
@@ -166,7 +166,9 @@ public class ProjectStepDefinitions {
 
     @Then("^I read the AccountNos file and enter into (.*) input box$")
     public void readTxtFile(String element) throws IOException {
-        String data = new String(Files.readAllBytes(Paths.get("src/test/resources/test_data/AddNew.txt")));
+        String fileData = new String(Files.readAllBytes(Paths.get("src/test/resources/test_data/AddNew.txt")));
+        String[] intermediateFilter = fileData.split("\\r?\\n");
+        String data = String.join(",", intermediateFilter);
         // Assigning value to global variable
         this.accountNos = data;
         System.err.println("These are the accounts: " + accountNos);
@@ -176,13 +178,14 @@ public class ProjectStepDefinitions {
     @Then("^we read the (.*) file and enter into (.*) input box$")
     public void readPassword(String filename, String element) throws IOException {
         String data = new String(Files.readAllBytes(Paths.get("src/test/resources/test_data/" + filename)));
+        driver.findElement(By.xpath(ObjectProperties.getElementProperty(element))).clear();
         inputText(data, element);
     }
 
     @Then("^we selected the given account Ids$")
     public void selectAccounts() throws InterruptedException {
         WebElement checkbox;
-        String[] filter = this.accountNos.split(",\\r?\\n");
+        String[] filter = this.accountNos.split(",");
         for (int i = 0; i < filter.length; i++) {
             if (i == 10 || i == 20) {
                 driver.findElement(By.xpath(ObjectProperties.getElementProperty("NextPageBtn"))).click();
@@ -215,7 +218,7 @@ public class ProjectStepDefinitions {
     @Then("^we are adding all ASLAAS numbers for new accounts$")
     public void ASLAAS_Number() throws InterruptedException, IOException {
         int paidMonths;
-        String[] filter = this.accountNos.split(",\\r?\\n");
+        String[] filter = this.accountNos.split(",");
         Arrays.sort(filter);
         System.err.println(Arrays.toString(filter));
         System.err.println(filter.length);
@@ -231,6 +234,11 @@ public class ProjectStepDefinitions {
                     .getText());
             if (paidMonths == 1) {
                 newAccounts.add(i);
+            }
+            if (i == (filter.length - 1) && filter.length > 10) {
+                driver.findElement(By.xpath(ObjectProperties.getElementProperty("GoToPageInputBox"))).sendKeys("1");
+                driver.findElement(By.xpath(ObjectProperties.getElementProperty("GoBtn"))).click();
+                Thread.sleep(1000);
             }
         }
         Thread.sleep(1000);
@@ -294,7 +302,7 @@ public class ProjectStepDefinitions {
         String[] nextMonthDateArray;
         String accountOpenDate;
         ArrayList<Object[]> list = new ArrayList<Object[]>();
-        String[] filter = this.accountNos.split(",\\r?\\n");
+        String[] filter = this.accountNos.split(",");
         LocalDate date;
         LocalDate earlier;
         for (int i = 0; i < filter.length; i++) {
