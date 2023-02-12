@@ -143,8 +143,9 @@ public class ProjectStepDefinitions {
                 Thread.sleep(15000);
                 isAlertPresent();
                 captcha = (String) js.executeScript("return window.promptResponse");
-                if(captcha == null) {
-                    String pass = new String(Files.readAllBytes(Paths.get("src/test/resources/test_data/password.txt")));
+                if (captcha == null) {
+                    String pass = new String(
+                            Files.readAllBytes(Paths.get("src/test/resources/test_data/password.txt")));
                     inputText(pass, "AgentPassword");
                     continue;
                 }
@@ -167,8 +168,9 @@ public class ProjectStepDefinitions {
     @Then("^I read the AccountNos file and enter into (.*) input box$")
     public void readTxtFile(String element) throws IOException {
         String fileData = new String(Files.readAllBytes(Paths.get("src/test/resources/test_data/AddNew.txt")));
-        String[] intermediateFilter = fileData.split("\\r?\\n");
-        String data = String.join(",", intermediateFilter);
+        String[] intermediateFilter = fileData.split("\\r?\\n\\r?\\n");
+        String[] finalFilter = intermediateFilter[0].split("\\r?\\n");
+        String data = String.join(",", finalFilter);
         // Assigning value to global variable
         this.accountNos = data;
         System.err.println("These are the accounts: " + accountNos);
@@ -263,10 +265,10 @@ public class ProjectStepDefinitions {
 
     }
 
-    @Then("^we need open dates for all given accounts and create excel file$")
-    public void createExcel() throws InterruptedException, FileNotFoundException {
+    @Then("we need open dates for all given accounts and create excel file with AccountIds{int} should be file number")
+    public void createExcel(int i) throws InterruptedException, FileNotFoundException {
         accountOpenDate();
-        // create blank workbook
+        // Create a blank workbook
         XSSFWorkbook workbook = new XSSFWorkbook();
         // Create a blank sheet
         XSSFSheet sheet = workbook.createSheet("AccountIds");
@@ -286,7 +288,8 @@ public class ProjectStepDefinitions {
         }
         try {
             // Write the workbook in file system
-            FileOutputStream out = new FileOutputStream(new File("src\\test\\resources\\test_data\\AccountIds.xlsx"));
+            FileOutputStream out = new FileOutputStream(
+                    new File("src\\test\\resources\\test_data\\AccountIds" + i + ".xlsx"));
             workbook.write(out);
             out.close();
             System.out.println("AccountIds.xlsx has been created successfully");
@@ -355,6 +358,42 @@ public class ProjectStepDefinitions {
             return false;
         }
 
+    }
+
+    @Then("^we need to iterate the process for multiple lists$")
+    public void iterateProcess() throws IOException, InterruptedException {
+        String fileData = new String(Files.readAllBytes(Paths.get("src/test/resources/test_data/AddNew.txt")));
+        String[] intermediateFilter = fileData.split("\\r?\\n\\r?\\n");
+        String[] finalFilter;
+        int filterLen = intermediateFilter.length;
+        for (int i = 1; i < filterLen; i++) {
+            click("AccountsEnquireLink");
+            ObjectProperties.initializeObjectProperties("DashboardPage");
+            click("CashRadionBtn");
+            finalFilter = intermediateFilter[i].split("\\r?\\n");
+            String data = String.join(",", finalFilter);
+            this.accountNos = data;
+            inputText(accountNos, "AccountIdInputArea");
+            click("FetchBtn");
+            ASLAAS_Number();
+            createExcel(i);
+            selectAccounts();
+            click("SaveBtn");
+            explicitWait(2);
+            click("PayAccountsBtn");
+            explicitWait(1);
+            copyRefNum();
+            click("ReportsLink");
+            explicitWait(2);
+            ObjectProperties.initializeObjectProperties("ReportsPage");
+            enterRefNum();
+            selectDropdown("Success", "Status");
+            click("SearchBtn");
+            explicitWait(1);
+            selectDropdown("XLS file", "Format");
+            click("DownloadOkBtn");
+            explicitWait(10);
+        }
     }
 
     @After

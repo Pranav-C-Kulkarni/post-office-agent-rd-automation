@@ -22,7 +22,7 @@ Feature: Creating a RD list using automation
     And I read the AccountNos file and enter into AccountIdInputArea input box
     And we click on FetchBtn
     Then we are adding all ASLAAS numbers for new accounts
-    And we need open dates for all given accounts and create excel file
+    And we need open dates for all given accounts and create excel file with AccountIds0 should be file number
     Then we selected the given account Ids
     And we click on SaveBtn
     And we wait for 2 seconds
@@ -41,6 +41,10 @@ Feature: Creating a RD list using automation
     Then we select "XLS file" from Format dropdown
     And we click on DownloadOkBtn
     And we wait for 10 seconds
+    ###############ITERATION#############################
+    And we need to iterate the process for multiple lists
+    #####################################################
+    And we wait for 5 seconds
     #####################################################
     ##################LOG OUT############################
     And we click on LogoutLink
