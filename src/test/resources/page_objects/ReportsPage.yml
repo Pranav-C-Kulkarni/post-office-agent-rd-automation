@@ -1,5 +1,7 @@
 ---
 ReportsPage:
+   AccountsEnquireLink: "//*[@id='Agent Enquire & Update Screen']"
+   CashRadionBtn: "//*[@title='Cash']"
    ReferenceNumberInputBox: "//*[@title='Reference ID']"
    Status: "//*[@id='CustomAgentRDAccountFG.INSTALLMENT_STATUS']"
    SearchBtn: "//*[@id='SearchBtn']"
