@@ -324,7 +324,7 @@ public class ProjectStepDefinitions {
                             "//*[@id='HREF_CustomAgentRDAccountFG.NEXT_RD_INSTALLMENT_DATE_ALL_ARRAY[" + i + "]']"))
                     .getText();
             if (nextMonthText.equals(" ")) {
-                accountOpenDate = "";
+                accountOpenDate = "-1";
                 System.err.println("The account open date is: " + accountOpenDate);
                 list.add(new Object[] { accountOpenDate });
                 continue;
