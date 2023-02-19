@@ -323,6 +323,12 @@ public class ProjectStepDefinitions {
                     .findElement(By.xpath(
                             "//*[@id='HREF_CustomAgentRDAccountFG.NEXT_RD_INSTALLMENT_DATE_ALL_ARRAY[" + i + "]']"))
                     .getText();
+            if (nextMonthText.equals(" ")) {
+                accountOpenDate = "";
+                System.err.println("The account open date is: " + accountOpenDate);
+                list.add(new Object[] { accountOpenDate });
+                continue;
+            }
             nextMonthDateArray = nextMonthText.split("-");
             date = LocalDate.of(Integer.valueOf(nextMonthDateArray[2]), months.indexOf(nextMonthDateArray[1]),
                     Integer.valueOf(nextMonthDateArray[0]));
